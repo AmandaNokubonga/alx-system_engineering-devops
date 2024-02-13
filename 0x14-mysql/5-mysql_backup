@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# generate a MySQL dump and create a compressed archive out of it.
+
+sudo mysqldump -u root -p'$1' --all-databases > backup.sql | gzip > date +\%d-\%m-\%Y.tar.gz
