@@ -1,13 +1,13 @@
 #!/usr/bin/python3
-""" Import request module """
+"""Import request module."""
 import requests
 from sys import argv
 
 
 def userTodo():
-    """ returns information about his/her TODO list progress. """
+    """Returns information about his/her TODO list progress."""
     api = "https://jsonplaceholder.typicode.com/"
-    if (len(argv) > 1):
+    if len(argv) > 1:
         id = int(argv[1])
         reqUser = requests.get('{}users/{:d}'.format(api, id)).json()
         reqTodo = requests.get('{}todos'.format(api),
@@ -21,5 +21,5 @@ def userTodo():
             print('\t {}'.format(i.get('title')))
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     userTodo()
