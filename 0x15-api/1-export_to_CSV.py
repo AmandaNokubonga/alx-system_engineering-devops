@@ -1,11 +1,12 @@
-mport request module """
+#!/usr/bin/python3
+"""Import request module."""
 import csv
 import requests
 from sys import argv
 
 
 def exportCsv():
-    """ Returns information about his/her TODO list progress. """
+    """Returns information about his/her TODO list progress."""
     api = "https://jsonplaceholder.typicode.com/"
     if len(argv) > 1:
         id = int(argv[1])
