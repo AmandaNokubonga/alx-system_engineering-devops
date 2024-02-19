@@ -1,24 +1,29 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
-
+""" Import request module """
+import csv
 import requests
-import sys
+from sys import argv
 
 
-if _name_ == '_main_':
-    employeeId = sys.argv[1]
-    baseUrl = "https://jsonplaceholder.typicode.com/users"
-    url = baseUrl + "/" + employeeId
+def exportCsv():
+    """ returns information about his/her TODO list progress. """
+    api = "https://jsonplaceholder.typicode.com/"
+    if (len(argv) > 1):
+        id = int(argv[1])
+        reqTodo = requests.get('{}todos'.format(api),
+                               params={'userId': id}).json()
+        reqUser = requests.get('{}users/{:d}'.format(api, id)).json()
 
-    response = requests.get(url)
-    username = response.json().get('username')
+    with open('{}.csv'.format(id), 'w') as file:
+        writer = csv.writer(file, lineterminator='\n', quoting=csv.QUOTE_ALL)
+        [writer.writerow(['{}'.format(field)
+                          for field in (todo.get('userId'),
+                                        reqUser.get('username'),
+                                        todo.get('completed'),
+                                        todo.get('title')
+                                        )])
+            for todo in reqTodo]
 
-    todoUrl = url + "/todos"
-    response = requests.get(todoUrl)
-    tasks = response.json()
 
-    with open('{}.csv'.format(employeeId), 'w') as file:
-        for task in tasks:
-            file.write('"{}","{}","{}","{}"\n'
-                       .format(employeeId, username, task.get('completed'),
-                               task.get('title')))
+if _name_ == "_main_":
+    exportCsv()
